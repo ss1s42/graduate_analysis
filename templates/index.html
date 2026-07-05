@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毕业生就业数据分析系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- ====== 侧边栏导航 ====== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon"></div>
+            <div class="brand-text">
+                <span class="brand-title">就业数据分析</span>
+                <span class="brand-sub">2020届毕业生</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item active" data-page="overview" onclick="switchPage('overview')">
+                <span class="nav-icon"></span><span class="nav-label">项目概览</span>
+            </a>
+            <a class="nav-item" data-page="employment" onclick="switchPage('employment')">
+                <span class="nav-icon"></span><span class="nav-label">就业率分析</span>
+            </a>
+            <a class="nav-item" data-page="employer" onclick="switchPage('employer')">
+                <span class="nav-icon"></span><span class="nav-label">单位性质分布</span>
+            </a>
+            <a class="nav-item" data-page="salary" onclick="switchPage('salary')">
+                <span class="nav-icon"></span><span class="nav-label">薪酬分布</span>
+            </a>
+            <a class="nav-item" data-page="gender" onclick="switchPage('gender')">
+                <span class="nav-icon"></span><span class="nav-label">性别薪酬差异</span>
+            </a>
+            <a class="nav-item" data-page="location" onclick="switchPage('location')">
+                <span class="nav-icon"></span><span class="nav-label">地区分布</span>
+            </a>
+            <a class="nav-item" data-page="postgraduate" onclick="switchPage('postgraduate')">
+                <span class="nav-icon"></span><span class="nav-label">考研升学</span>
+            </a>
+            <a class="nav-item" data-page="ml" onclick="switchPage('ml')">
+                <span class="nav-icon"></span><span class="nav-label">就业预测模型</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer"><span>© 2026 课设项目</span></div>
+    </aside>
+
+    <!-- ====== 主内容区域 ====== -->
+    <main class="main-content">
+
+        <!-- ============================================================ -->
+        <!-- 页面 1: 项目概览 -->
+        <!-- ============================================================ -->
+        <section class="page active" id="page-overview">
+            <div class="page-header">
+                <h2>项目概览</h2>
+                <p>2020届毕业生就业数据综合分析 · 数据量：5,284条记录</p>
+            </div>
+            <div class="overview-cards" id="overview-cards"></div>
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card"><div class="card-header"><h3>学历层次分布</h3></div><div class="card-body"><div class="chart" id="chart-edu-pie"></div></div></div>
+                <div class="card"><div class="card-header"><h3>就业状态总览</h3></div><div class="card-body"><div class="chart" id="chart-emp-status"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;"><div class="card-header"><h3>毕业去向分布（本科生）</h3></div><div class="card-body"><div class="chart" id="chart-fy-dist"></div></div></div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 2: 就业率分析 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-employment">
+            <div class="page-header">
+                <h2>就业率分析</h2>
+                <p>全校整体 · 学院 · 专业 · 性别 — 多维度就业率统计</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card"><div class="card-header"><h3>全校就业率（按学历）</h3></div><div class="card-body"><div class="chart" id="chart-er-overall"></div></div></div>
+                <div class="card"><div class="card-header"><h3>分性别就业率</h3></div><div class="card-body"><div class="chart" id="chart-er-gender"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;"><div class="card-header"><h3>各学院本科就业率排名</h3></div><div class="card-body"><div class="chart chart-tall" id="chart-er-college"></div></div></div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-header">
+                    <h3>各专业本科就业率 <span style="font-weight:400;font-size:13px;color:#64748B;">（全部 {{ major_count }} 个专业 · 可按学院筛选）</span></h3>
+                    <select class="filter-select" id="filter-er-college" onchange="filterMajorChart('employment')">
+                        <option value="all">全部学院</option>
+                    </select>
+                </div>
+                <div class="card-body"><div class="chart chart-tall" id="chart-er-major"></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;"><div class="card-header"><h3>各学院分性别就业率对比</h3></div><div class="card-body"><div class="chart chart-tall" id="chart-er-college-gender"></div></div></div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 3: 单位性质分布 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-employer">
+            <div class="page-header">
+                <h2>用人单位性质分布</h2>
+                <p>本科生就业单位归类为8大类别，含机关事业单位、国企、民企、外资等</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card"><div class="card-header"><h3>单位性质占比（饼图）</h3></div><div class="card-body"><div class="chart" id="chart-et-pie"></div></div></div>
+                <div class="card"><div class="card-header"><h3>单位性质分布（柱状图）</h3></div><div class="card-body"><div class="chart" id="chart-et-bar"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-header"><h3>单位类型明细归类表（全部）</h3></div>
+                <div class="card-body" style="overflow-x:auto;">
+                    <table class="data-table" id="table-et-detail">
+                        <thead><tr><th>原始单位类型</th><th>归类</th><th>人数</th></tr></thead><tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 4: 薪酬分布 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-salary">
+            <div class="page-header">
+                <h2>薪酬分布</h2>
+                <p>本科生学院-专业维度下的薪酬水平分析</p>
+            </div>
+            <div class="overview-cards" id="salary-cards"></div>
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card"><div class="card-header"><h3>各学院平均薪酬对比</h3></div><div class="card-body"><div class="chart" id="chart-sal-college"></div></div></div>
+                <div class="card"><div class="card-header"><h3>薪酬区间分布</h3></div><div class="card-body"><div class="chart" id="chart-sal-dist"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;"><div class="card-header"><h3>各学院薪酬箱线图</h3></div><div class="card-body"><div class="chart" id="chart-sal-boxplot"></div></div></div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-header">
+                    <h3>各专业平均薪酬排名 <span style="font-weight:400;font-size:13px;color:#64748B;">（全部专业 · 可按学院筛选）</span></h3>
+                    <select class="filter-select" id="filter-sal-college" onchange="filterMajorChart('salary')">
+                        <option value="all">全部学院</option>
+                    </select>
+                </div>
+                <div class="card-body"><div class="chart chart-tall" id="chart-sal-major"></div></div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 5: 性别薪酬差异 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-gender">
+            <div class="page-header">
+                <h2>性别与薪酬差异分析</h2>
+                <p>基于学院-专业维度的男女薪酬对比</p>
+            </div>
+            <div class="overview-cards" id="gender-cards"></div>
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card"><div class="card-header"><h3>各学院男女平均薪酬对比</h3></div><div class="card-body"><div class="chart" id="chart-gs-bar"></div></div></div>
+                <div class="card"><div class="card-header"><h3>男女薪酬分布密度对比</h3></div><div class="card-body"><div class="chart" id="chart-gs-density"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-header">
+                    <h3>各专业男女薪酬差异 <span style="font-weight:400;font-size:13px;color:#64748B;">（全部专业 · 可按学院筛选）</span></h3>
+                    <select class="filter-select" id="filter-gs-college" onchange="filterMajorChart('gender')">
+                        <option value="all">全部学院</option>
+                    </select>
+                </div>
+                <div class="card-body"><div class="chart chart-tall" id="chart-gs-major"></div></div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 6: 地区分布 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-location">
+            <div class="page-header">
+                <h2>就业地区分布</h2>
+                <p>本科生就业落在大湾区、广东省内、省外、境外的分布情况</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card"><div class="card-header"><h3>地区分类占比</h3></div><div class="card-body"><div class="chart" id="chart-loc-pie"></div></div></div>
+                <div class="card"><div class="card-header"><h3>大湾区各城市就业人数</h3></div><div class="card-body"><div class="chart" id="chart-loc-gba"></div></div></div>
+            </div>
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card"><div class="card-header"><h3>省内非大湾区城市就业人数</h3></div><div class="card-body"><div class="chart" id="chart-loc-gd-other"></div></div></div>
+                <div class="card"><div class="card-header"><h3>省外就业省份分布</h3></div><div class="card-body"><div class="chart" id="chart-loc-province"></div></div></div>
+            </div>
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card"><div class="card-header"><h3>境外就业主要国家</h3></div><div class="card-body"><div class="chart" id="chart-loc-overseas"></div></div></div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 页面 7: 考研升学 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-postgraduate">
+            <div class="page-header">
+                <h2>考研升学分析</h2>
+                <p>本科各专业考研去向及TOP3院校统计</p>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>各专业升学人数 <span style="font-weight:400;font-size:13px;color:#64748B;">（全部专业 · 可按学院筛选）</span></h3>
+                        <select class="filter-select" id="filter-pg-college" onchange="filterMajorChart('postgraduate')">
+                            <option value="all">全部学院</option>
+                        </select>
+                    </div>
+                    <div class="card-body"><div class="chart" id="chart-pg-major"></div></div>
+                </div>
+                <div class="card"><div class="card-header"><h3>升学热门院校排名</h3></div><div class="card-body"><div class="chart" id="chart-pg-school"></div></div></div>
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-header">
+                    <h3>各专业考研学校 TOP3 <span style="font-weight:400;font-size:13px;color:#64748B;">（全部专业）</span></h3>
+                </div>
+                <div class="card-body" style="overflow-x:auto;">
+                    <table class="data-table" id="table-pg-pivot">
+                        <thead><tr><th>专业名称</th><th>升学总人数</th><th>TOP1 院校</th><th>TOP1人数</th><th>TOP2 院校</th><th>TOP2人数</th><th>TOP3 院校</th><th>TOP3人数</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================ -->
+        <!-- 页面 8: 机器学习就业预测 -->
+        <!-- ============================================================ -->
+        <section class="page" id="page-ml">
+            <div class="page-header">
+                <h2>用人单位性质预测</h2>
+                <p>基于 PyTorch + TabNet 深度学习框架 — 预测毕业生就业单位类型（8 分类）</p>
+            </div>
+
+            <!-- 模型说明 -->
+            <div class="card">
+                <div class="card-header"><h3>📋 模型方法与架构说明</h3></div>
+                <div class="card-body">
+                    <div class="ml-info" id="ml-info-grid"></div>
+                </div>
+            </div>
+
+            <!-- 评估指标卡片 -->
+            <div class="card" style="margin-top:20px;" id="ml-metrics-card">
+                <div class="card-header"><h3>📊 模型评估指标</h3></div>
+                <div class="card-body" id="ml-metrics-container"></div>
+            </div>
+
+            <!-- 混淆矩阵 + 损失曲线 -->
+            <div class="grid-2col" style="margin-top:20px;">
+                <div class="card">
+                    <div class="card-header"><h3>🔢 混淆矩阵</h3></div>
+                    <div class="card-body card-img-center" id="ml-cm-container"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>📉 训练损失曲线</h3></div>
+                    <div class="card-body card-img-center" id="ml-loss-container"></div>
+                </div>
+            </div>
+
+            <!-- 错误分类数据 -->
+            <div class="card" style="margin-top:20px;" id="ml-error-card">
+                <div class="card-header"><h3>❌ 错误分类样本分析</h3></div>
+                <div class="card-body" id="ml-error-container"></div>
+            </div>
+
+            <!-- 交互式预测 -->
+            <div class="card" style="margin-top:20px;" id="ml-predict-card">
+                <div class="card-header"><h3>🔮 交互式预测</h3></div>
+                <div class="card-body">
+                    <div class="predict-form">
+                        <div class="predict-row">
+                            <div class="predict-field">
+                                <label>性别</label>
+                                <select id="pred-gender" class="filter-select"></select>
+                            </div>
+                            <div class="predict-field">
+                                <label>学历</label>
+                                <select id="pred-edu" class="filter-select"></select>
+                            </div>
+                            <div class="predict-field">
+                                <label>专业</label>
+                                <select id="pred-major" class="filter-select"></select>
+                            </div>
+                        </div>
+                        <div class="predict-row">
+                            <div class="predict-field">
+                                <label>生源地省份</label>
+                                <select id="pred-province" class="filter-select"></select>
+                            </div>
+                            <div class="predict-field">
+                                <label>专业是否对口</label>
+                                <select id="pred-zyk" class="filter-select"></select>
+                            </div>
+                            <div class="predict-field">
+                                <label>政治面貌</label>
+                                <select id="pred-zzmm" class="filter-select"></select>
+                            </div>
+                            <div class="predict-field">
+                                <label>民族</label>
+                                <select id="pred-mz" class="filter-select"></select>
+                            </div>
+                        </div>
+                        <button class="predict-btn" onclick="doPredict()">🔍 预测我的就业单位类型</button>
+                    </div>
+                    <div id="predict-result" style="margin-top:16px;"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

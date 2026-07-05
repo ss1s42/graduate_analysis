@@ -1,0 +1,434 @@
+{
+  "model_type": "TabNet (8分类)",
+  "device": "cpu",
+  "task": "用人单位性质预测（8分类）",
+  "features": [
+    "性别",
+    "education_level",
+    "专业名称",
+    "province",
+    "专业与就业相关度",
+    "政治面貌",
+    "民族"
+  ],
+  "cat_dims": [
+    2,
+    1,
+    53,
+    17,
+    6,
+    4,
+    10
+  ],
+  "num_classes": 8,
+  "class_names": [
+    "其他/未知",
+    "升学",
+    "国有企业",
+    "基层项目",
+    "外资企业",
+    "机关事业单位",
+    "民营企业",
+    "灵活就业/自由职业"
+  ],
+  "data_split": {
+    "train": 3312,
+    "val": 710,
+    "test": 710
+  },
+  "class_distribution": {
+    "民营企业": 2743,
+    "升学": 500,
+    "国有企业": 436,
+    "机关事业单位": 429,
+    "灵活就业/自由职业": 372,
+    "外资企业": 132,
+    "其他/未知": 78,
+    "基层项目": 42
+  },
+  "class_weights": {
+    "0": 7.5833,
+    "1": 1.183,
+    "2": 1.3567,
+    "3": 14.0833,
+    "4": 4.4811,
+    "5": 1.3788,
+    "6": 0.2156,
+    "7": 1.5901
+  },
+  "metrics": {
+    "accuracy": 0.6775,
+    "precision_weighted": 0.5405,
+    "recall_weighted": 0.6775,
+    "f1_weighted": 0.5652
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      11,
+      1
+    ],
+    [
+      0,
+      74,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
+      0,
+      1,
+      62,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      63,
+      1
+    ],
+    [
+      0,
+      0,
+      3,
+      0,
+      0,
+      2,
+      404,
+      2
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      56,
+      0
+    ]
+  ],
+  "confusion_labels": [
+    "其他/未知",
+    "升学",
+    "国有企业",
+    "基层项目",
+    "外资企业",
+    "机关事业单位",
+    "民营企业",
+    "灵活就业/自由职业"
+  ],
+  "error_analysis": {
+    "total_errors": 229,
+    "total_test": 710,
+    "error_rate": 0.3225,
+    "error_samples": [
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "社会工作",
+        "province": "广东省",
+        "true_label": "机关事业单位",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "环境设计",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "计算机科学与技术",
+        "province": "广东省",
+        "true_label": "外资企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "物联网工程",
+        "province": "广东省",
+        "true_label": "机关事业单位",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "财务管理",
+        "province": "广东省",
+        "true_label": "其他/未知",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "人力资源管理",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "会展经济与管理",
+        "province": "广东省",
+        "true_label": "外资企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "农林经济管理",
+        "province": "广东省",
+        "true_label": "其他/未知",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "日语",
+        "province": "广东省",
+        "true_label": "其他/未知",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "工商管理",
+        "province": "广东省",
+        "true_label": "机关事业单位",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "会展经济与管理",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "能源与动力工程",
+        "province": "广东省",
+        "true_label": "国有企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "日语",
+        "province": "广东省",
+        "true_label": "机关事业单位",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "人力资源管理",
+        "province": "广东省",
+        "true_label": "国有企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "统计学",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "工商管理",
+        "province": "广东省",
+        "true_label": "国有企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "会展经济与管理",
+        "province": "广东省",
+        "true_label": "机关事业单位",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "女",
+        "education": "本科",
+        "major": "工商管理",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "自动化",
+        "province": "广东省",
+        "true_label": "国有企业",
+        "pred_label": "民营企业"
+      },
+      {
+        "gender": "男",
+        "education": "本科",
+        "major": "资源环境科学",
+        "province": "广东省",
+        "true_label": "灵活就业/自由职业",
+        "pred_label": "民营企业"
+      }
+    ],
+    "error_by_class": {
+      "其他/未知": {
+        "total": 12,
+        "wrong": 12,
+        "rate": 1.0,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 11
+          },
+          {
+            "class": "灵活就业/自由职业",
+            "count": 1
+          }
+        ]
+      },
+      "升学": {
+        "total": 75,
+        "wrong": 1,
+        "rate": 0.0133,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 1
+          }
+        ]
+      },
+      "国有企业": {
+        "total": 65,
+        "wrong": 63,
+        "rate": 0.9692,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 62
+          },
+          {
+            "class": "机关事业单位",
+            "count": 1
+          }
+        ]
+      },
+      "基层项目": {
+        "total": 6,
+        "wrong": 6,
+        "rate": 1.0,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 6
+          }
+        ]
+      },
+      "外资企业": {
+        "total": 20,
+        "wrong": 20,
+        "rate": 1.0,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 20
+          }
+        ]
+      },
+      "机关事业单位": {
+        "total": 65,
+        "wrong": 64,
+        "rate": 0.9846,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 63
+          },
+          {
+            "class": "灵活就业/自由职业",
+            "count": 1
+          }
+        ]
+      },
+      "民营企业": {
+        "total": 411,
+        "wrong": 7,
+        "rate": 0.017,
+        "most_confused_with": [
+          {
+            "class": "国有企业",
+            "count": 3
+          },
+          {
+            "class": "机关事业单位",
+            "count": 2
+          },
+          {
+            "class": "灵活就业/自由职业",
+            "count": 2
+          }
+        ]
+      },
+      "灵活就业/自由职业": {
+        "total": 56,
+        "wrong": 56,
+        "rate": 1.0,
+        "most_confused_with": [
+          {
+            "class": "民营企业",
+            "count": 56
+          }
+        ]
+      }
+    }
+  }
+}
